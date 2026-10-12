@@ -644,7 +644,7 @@
 
     .suspect {
       perspective: 1000px;
-      min-height: 250px;
+      min-height: 320px;
       background: none;
       border: none;
       padding: 0;
@@ -658,7 +658,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      min-height: 250px;
+      min-height: 320px;
       transition: transform 0.7s cubic-bezier(0.3, 0.7, 0.2, 1);
       transform-style: preserve-3d;
     }
@@ -1516,13 +1516,13 @@
           <li><strong>Questions:</strong> email the committee about tickets, volunteering, or accessibility.</li>
         </ul>
         <div class="cta-row" style="margin: 20px 0 0;">
-          <a class="ghost-button" href="mailto:lisdsj4@stanford.edu,sdesai05@stanford.edu?subject=Fall%20Ball%20Question">Contact the Committee</a>
+          <a class="ghost-button" href="mailto:lisdsj4@stanford.edu,sdesai05@stanford.edu?subject=I'd%20like%20to%20report%20a%20dead%20body--%20Fall%20Ball%20Question">Contact the Committee</a>
         </div>
       </article>
     </section>
 
     <section class="grid" id="volunteer">
-      <article class="card">
+      <article class="card"> 
         <span class="kicker">Join the Conspiracy</span>
         <h2><span class="accent">Volunteer</span> for a Free Ticket</h2>
         <p>
@@ -1590,7 +1590,7 @@
     <footer>
       A Killer Fall Ball &middot; Stanford University &middot; Friday, November 6, 2026 &middot; Roble Gym
       <br><br>
-      <a href="mailto:lisdsj4@stanford.edu,sdesai05@stanford.edu?subject=Fall%20Ball">Contact the committee</a>
+      <a href="mailto:lisdsj4@stanford.edu,sdesai05@stanford.edu?subject=I'd%20like%20to%20report%20a%20dead%20body--%20Fall%20Ball%20Question">Contact the committee</a>
       <p class="egg-hint">Rumor has it there are more secrets hidden on this site. Secrets uncovered: <b id="eggCount">0</b>/<span id="eggTotal">6</span></p>
       <span class="butler">The butler did it.</span>
     </footer>
@@ -1737,7 +1737,8 @@
         first: "Lis",
         role: "Co-Chair",
         initial: "L",
-        motive: "Planned every minute of the evening. Every. Single. Minute.",
+        suspicious: "Planned every minute of the evening. Every. Single. Minute.",
+        motive: "Got eliminated at Boogie by the Bay.",
         alibi: "\u201CI was co-chairing all night. Ask Samuel.\u201D",
         rebuttal: "Lis produces a color-coded run-of-show and calmly points out that she and Samuel are each other's alibi. Suspicious, but airtight. Released."
       },
@@ -1746,7 +1747,8 @@
         first: "Samuel",
         role: "Co-Chair",
         initial: "S",
-        motive: "Has the guest list memorized. Knows exactly who wasn't invited.",
+        suspicious: "Has the guest list memorized. Knows exactly who wasn't invited.",
+        motive: "Failed Richard Powers' class.",
         alibi: "\u201CI was co-chairing all night. Ask Lis.\u201D",
         rebuttal: "Samuel produces the guest list, signed and timestamped, proving he was at the check-in table. Released."
       },
@@ -1755,7 +1757,8 @@
         first: "Eddy",
         role: "Decor",
         initial: "E",
-        motive: "Personally placed every candlestick in the ballroom.",
+        suspicious: "Personally placed every candlestick in the ballroom.",
+        motive: "Their dance partner smelled.",
         alibi: "\u201CI was hanging drapes. In the dark. Alone.\u201D",
         rebuttal: "Eddy was up a ladder hanging drapes the whole time. Michael held it steady. Released."
       },
@@ -1764,7 +1767,8 @@
         first: "Michael",
         role: "Decor",
         initial: "M",
-        motive: "Bought an alarming amount of blood-red fabric. Won't say why.",
+        suspicious: "Bought an alarming amount of blood-red fabric. Won't say why.",
+        motive: "Got stepped on during the Grand March and never recovered.",
         alibi: "\u201CI was holding Eddy's ladder. The entire time.\u201D",
         rebuttal: "Michael has receipts for the red fabric. It really was just tablecloths. Released."
       },
@@ -1773,7 +1777,8 @@
         first: "Milo",
         role: "Logistics",
         initial: "M",
-        motive: "Holds the keys to every door in Roble Gym.",
+        suspicious: "Holds the keys to every door in Roble Gym.",
+        motive: "Someone took the last piece of charcuterie.",
         alibi: "\u201CI was serving food all night. Ask anyone who had the charcuterie.\u201D",
         rebuttal: "A line of well-fed witnesses confirms Milo was at the food table refilling the charcuterie the entire night. Released."
       },
@@ -1782,7 +1787,8 @@
         first: "Rehman",
         role: "Logistics",
         initial: "R",
-        motive: "Controls the schedule, including exactly when the lights go out.",
+        suspicious: "Controls the schedule, including exactly when the lights go out.",
+        motive: "Was never asked to dance at Viennese Ball.",
         alibi: "\u201CThe lights went out on time. That's all I'll say.\u201D",
         rebuttal: "Rehman shows the timeline: the lights went out exactly as scheduled. Annoyingly punctual. Released."
       }
@@ -1803,6 +1809,8 @@
             <div class="suspect-hint">Tap to interrogate</div>
           </div>
           <div class="suspect-face suspect-back">
+            <span class="label">Evidence</span>
+            <p>${s.suspicious}</p>
             <span class="label">Motive</span>
             <p>${s.motive}</p>
             <span class="label">Alibi</span>
