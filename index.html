@@ -184,7 +184,6 @@
       position: relative;
       border: 1px solid var(--line);
       background: var(--panel);
-      backdrop-filter: blur(12px);
       box-shadow: var(--shadow);
     }
 
@@ -278,6 +277,9 @@
       color: var(--blood-bright);
       text-shadow: 0 0 30px rgba(227, 35, 47, 0.55);
       animation: flicker 7s infinite;
+      /* own compositing layer, so the flicker never repaints the rest of the page */
+      will-change: opacity;
+      transform: translateZ(0);
     }
 
     @keyframes flicker {
@@ -1232,6 +1234,11 @@
         padding-top: 12px;
       }
 
+      .brand {
+        white-space: normal;
+        letter-spacing: 0.16em;
+      }
+
       .topbar {
         flex-direction: column;
         align-items: flex-start;
@@ -1851,7 +1858,7 @@
     const SOLVED_HTML = `<strong>It was you.</strong>
         The dance card, the glove, the socks, the fingerprints, the cheese: it all points to you.
         You're going to absolutely <em>kill it</em> on the dance floor. Report to Roble Gym on
-        Friday, November 6 at 9:00 PM (or 8:00 PM for the waltz lesson) to face the music.`;
+        Friday, November 6 at 9:00 PM (or 8:00 PM for the waltz lesson) for the night of your life.`;
 
     // Reserve room for the longest possible verdict so the box never changes size.
     function sizeVerdict() {
