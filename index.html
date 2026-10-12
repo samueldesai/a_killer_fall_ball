@@ -1040,25 +1040,31 @@
 
     .splatter {
       position: fixed;
-      inset: 0 0 auto 0;
+      inset: 0;
       z-index: 45;
-      height: 0;
+      overflow: hidden;
       pointer-events: none;
-      background: linear-gradient(180deg, var(--blood-dark), var(--blood));
-      -webkit-mask: radial-gradient(circle 22px at 50% 100%, #000 98%, transparent) 0 0 / 60px 100% repeat-x,
-        linear-gradient(#000, #000) 0 0 / 100% calc(100% - 20px) no-repeat;
-      mask: radial-gradient(circle 22px at 50% 100%, #000 98%, transparent) 0 0 / 60px 100% repeat-x,
-        linear-gradient(#000, #000) 0 0 / 100% calc(100% - 20px) no-repeat;
     }
 
-    .splatter.go {
-      animation: bleed 2.6s ease-in forwards;
+    .splatter svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: block;
+      transform: translateY(-105%);
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
     }
 
+    .splatter.go svg {
+      animation: bleed 3.4s forwards;
+    }
+
+    /* pour down from the top, linger, then slide away */
     @keyframes bleed {
-      0% { height: 0; opacity: 1; }
-      55% { height: 70vh; opacity: 1; }
-      100% { height: 110vh; opacity: 0; }
+      0% { transform: translateY(-105%); opacity: 1; animation-timing-function: cubic-bezier(0.55, 0, 0.75, 1); }
+      42% { transform: translateY(0); opacity: 1; animation-timing-function: ease-in-out; }
+      62% { transform: translateY(2%); opacity: 1; animation-timing-function: ease-in; }
+      100% { transform: translateY(30%); opacity: 0; }
     }
 
     /* ---------- welcome animation ---------- */
@@ -1779,7 +1785,7 @@
     /* ---------- clues ---------- */
     const clues = [
       { title: "Torn Dance Card", note: "Every line is filled in with the same name. Yours." },
-      { title: "Snuffed Candle", note: "Put out at exactly the moment you'd stop dancing." },
+      { title: "Snuffed Candle", note: "Put out at exactly the moment you stopped dancing." },
       { title: "Black Glove", note: "It fits you perfectly. How odd." },
       { title: "Socks at the Scene", note: "Soft-soled, regulation, and still warm from the dance floor." },
       { title: "Punch Bowl Prints", note: "They match the ones on your ticket stub." },
@@ -1997,6 +2003,42 @@
     let dropClicks = 0;
     let dropTimer;
     const splatter = document.querySelector(".splatter");
+
+    // Draw a fresh curtain of blood sized to the window: a solid sheet with a
+    // scalloped edge, and drips of random width and length, each ending in a bead.
+    function drawBlood() {
+      const W = innerWidth;
+      const H = innerHeight;
+      const edge = H * 0.42;
+      const shapes = [`<rect x="0" y="0" width="${W}" height="${edge}"/>`];
+      for (let x = 0; x <= W + 40; x += 34 + Math.random() * 20) {
+        shapes.push(`<circle cx="${x}" cy="${edge}" r="${18 + Math.random() * 14}"/>`);
+      }
+      const shines = [];
+      let x = Math.random() * 30;
+      while (x < W) {
+        const w = 8 + Math.random() * 20;
+        const end = edge + 40 + Math.random() * H * 0.5;
+        const bead = w * (0.75 + Math.random() * 0.2);
+        shapes.push(`<path d="M${x - w / 2 - 6} ${edge - 10} Q${x - w / 2} ${edge + 20} ${x - w / 2} ${edge + 40} L${x - w / 2 + 1} ${end} L${x + w / 2 - 1} ${end} L${x + w / 2} ${edge + 40} Q${x + w / 2} ${edge + 20} ${x + w / 2 + 6} ${edge - 10} Z"/>`);
+        shapes.push(`<ellipse cx="${x}" cy="${end}" rx="${bead}" ry="${bead * 1.15}"/>`);
+        shines.push(`<ellipse cx="${x - bead * 0.35}" cy="${end - bead * 0.35}" rx="${bead * 0.22}" ry="${bead * 0.32}"/>`);
+        x += 26 + Math.random() * 70;
+      }
+      splatter.innerHTML = `
+        <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bloodFill" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="${H}">
+              <stop offset="0" stop-color="#3d0507"/>
+              <stop offset="0.45" stop-color="#8a0d14"/>
+              <stop offset="1" stop-color="#b3121b"/>
+            </linearGradient>
+          </defs>
+          <g fill="url(#bloodFill)">${shapes.join("")}</g>
+          <g fill="rgba(255, 220, 220, 0.18)">${shines.join("")}</g>
+        </svg>`;
+    }
+
     document.querySelector(".brand-mark").addEventListener("click", (event) => {
       event.preventDefault();
       dropClicks += 1;
@@ -2005,6 +2047,7 @@
       if (dropClicks === 5) {
         dropClicks = 0;
         splatter.classList.remove("go");
+        drawBlood();
         void splatter.offsetWidth;
         splatter.classList.add("go");
         findEgg("blood", "First Blood", "You kept poking the blood drop. Now look what you've done.");
@@ -2047,7 +2090,7 @@
 
     // Bonus for the source-code sleuths
     console.log(
-      "%cA Killer Fall Ball%c\nSnooping through the source? A true detective.\nTry typing \"waltz\" or \"butler\" on the page.",
+      "%cA Killer Fall Ball%c\nSnooping through the source? A true detective.\nTry typing \"waltz\" or \"butler\" on the page. Certain gamers also know an old code...",
       "font: 32px serif; color: #e3232f;",
       "font: 14px serif; color: #efe6d8;"
     );
