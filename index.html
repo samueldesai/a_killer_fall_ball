@@ -876,6 +876,8 @@
     }
 
     .verdict {
+      display: flex;
+      align-items: center;
       min-height: 3.4em;
       padding: 18px 20px;
       border-left: 3px solid var(--blood);
@@ -1528,7 +1530,7 @@
       <div class="accuse">
         <h3>Make Your Accusation</h3>
         <div class="accuse-row" id="accuseRow"></div>
-        <div class="verdict" id="verdict" aria-live="polite">Choose a suspect when you're ready. Choose wisely.</div>
+        <div class="verdict" id="verdict" aria-live="polite"><div id="verdictText">Choose a suspect when you're ready. Choose wisely.</div></div>
         <button class="reset-case" id="resetCase" type="button">Reopen the case (reset clues)</button>
       </div>
     </section>
@@ -1835,6 +1837,7 @@
     /* ---------- accusation ---------- */
     const accuseRow = document.getElementById("accuseRow");
     const verdict = document.getElementById("verdict");
+    const verdictText = document.getElementById("verdictText");
     const SOLVED_HTML = `<strong>It was you.</strong>
         The dance card, the glove, the socks, the fingerprints, the cheese: it all points to you.
         You're going to absolutely <em>kill it</em> on the dance floor. Report to Roble Gym on
@@ -1842,7 +1845,7 @@
 
     // Reserve room for the longest possible verdict so the box never changes size.
     function sizeVerdict() {
-      const saved = { html: verdict.innerHTML, solved: verdict.classList.contains("solved") };
+      const saved = { html: verdictText.innerHTML, solved: verdict.classList.contains("solved") };
       const messages = [
         ...suspects.map((s) => ({ text: `You point at ${s.first}, but the case is too thin. You've found ${clues.length - 1} of ${clues.length} clues. Keep investigating.` })),
         ...suspects.map((s) => ({ text: s.rebuttal + " The evidence points somewhere else entirely..." })),
@@ -1854,12 +1857,12 @@
       let tallest = 0;
       messages.forEach((m) => {
         verdict.classList.toggle("solved", Boolean(m.solved));
-        if (m.html) verdict.innerHTML = m.html;
-        else verdict.textContent = m.text;
+        if (m.html) verdictText.innerHTML = m.html;
+        else verdictText.textContent = m.text;
         tallest = Math.max(tallest, verdict.offsetHeight);
       });
       verdict.classList.toggle("solved", saved.solved);
-      verdict.innerHTML = saved.html;
+      verdictText.innerHTML = saved.html;
       verdict.style.minHeight = `${tallest}px`;
     }
 
@@ -1871,9 +1874,9 @@
       btn.addEventListener("click", () => {
         verdict.classList.remove("solved");
         if (found.size < clues.length) {
-          verdict.textContent = `You point at ${s.first}, but the case is too thin. You've found ${found.size} of ${clues.length} clues. Keep investigating.`;
+          verdictText.textContent = `You point at ${s.first}, but the case is too thin. You've found ${found.size} of ${clues.length} clues. Keep investigating.`;
         } else {
-          verdict.textContent = s.rebuttal + " The evidence points somewhere else entirely...";
+          verdictText.textContent = s.rebuttal + " The evidence points somewhere else entirely...";
         }
       });
       accuseRow.appendChild(btn);
@@ -1886,7 +1889,7 @@
     mirrorButton.hidden = true;
     mirrorButton.addEventListener("click", () => {
       verdict.classList.add("solved");
-      verdict.innerHTML = SOLVED_HTML;
+      verdictText.innerHTML = SOLVED_HTML;
     });
     accuseRow.appendChild(mirrorButton);
 
@@ -1895,7 +1898,7 @@
       saveClues();
       renderBoard();
       verdict.classList.remove("solved");
-      verdict.textContent = "The case has been reopened. The clues have been returned to the scene.";
+      verdictText.textContent = "The case has been reopened. The clues have been returned to the scene.";
     });
 
     /* ---------- easter eggs ---------- */
