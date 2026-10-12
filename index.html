@@ -333,11 +333,6 @@
       margin-bottom: 10px;
     }
 
-    .countdown {
-      cursor: default;
-      user-select: none;
-    }
-
     .countdown-unit {
       padding: 12px 8px 10px;
       border: 1px solid var(--line);
@@ -1011,12 +1006,6 @@
       opacity: 1;
     }
 
-    /* detective: magnifying-glass cursor */
-    body.detective,
-    body.detective * {
-      cursor: zoom-in !important;
-    }
-
     /* waltz: everything sways in 3/4 */
     body.sway .page {
       animation: sway 2.1s ease-in-out infinite;
@@ -1541,12 +1530,12 @@
       A Killer Fall Ball &middot; Stanford University &middot; Friday, November 6, 2026 &middot; Roble Gym
       <br><br>
       <a href="mailto:lisdsj4@stanford.edu,sdesai05@stanford.edu?subject=Fall%20Ball">Contact the committee</a>
-      <p class="egg-hint">Rumor has it there are more secrets hidden on this site. Secrets uncovered: <b id="eggCount">0</b>/<span id="eggTotal">8</span></p>
+      <p class="egg-hint">Rumor has it there are more secrets hidden on this site. Secrets uncovered: <b id="eggCount">0</b>/<span id="eggTotal">6</span></p>
       <span class="butler">The butler did it.</span>
     </footer>
   </main>
 
-  <!-- Reading the source, detective? Try typing "waltz", "butler", or "detective" anywhere on the page. And old gamers know a certain code... -->
+  <!-- Reading the source, detective? Try typing "waltz" or "butler" anywhere on the page. And old gamers know a certain code... -->
   <div class="blackout" aria-hidden="true"></div>
   <div class="splatter" aria-hidden="true"></div>
 
@@ -1880,11 +1869,11 @@
 
     /* ---------- easter eggs ---------- */
     const EGG_KEY = "killerFallBall.eggs";
-    const EGG_TOTAL = 8;
+    const EGG_TOTAL = 6;
     let eggs = new Set();
     try {
       const saved = JSON.parse(localStorage.getItem(EGG_KEY) || "[]");
-      const validEggs = ["konami", "waltz", "butler", "detective", "blood", "stamp", "death", "tab"];
+      const validEggs = ["konami", "waltz", "butler", "blood", "stamp", "tab"];
       if (Array.isArray(saved)) eggs = new Set(saved.filter((id) => validEggs.includes(id)));
     } catch (error) {
       /* storage unavailable */
@@ -1918,7 +1907,7 @@
       blackout.style.setProperty("--ly", `${event.clientY}px`);
     });
 
-    // 2-4. Typed words: waltz, butler, detective
+    // 2-3. Typed words: waltz, butler
     let typed = "";
     const words = {
       waltz: () => {
@@ -1926,11 +1915,7 @@
         if (music.paused) musicToggle.click();
         findEgg("waltz", "One, Two, Three", "The whole ballroom sways in 3/4 time. Type it again to steady yourself.");
       },
-      butler: () => findEgg("butler", "The Butler", "The butler did it? We don't even have a butler. ...Or do we? Check the very bottom of the page."),
-      detective: () => {
-        document.body.classList.add("detective");
-        findEgg("detective", "On the Case", "You've been sworn in as lead detective. Your cursor is now a magnifying glass. Inspect everything.");
-      }
+      butler: () => findEgg("butler", "The Butler", "The butler did it? We don't even have a butler. ...Or do we? Check the very bottom of the page.")
     };
 
     document.addEventListener("keydown", (event) => {
@@ -1957,7 +1942,7 @@
       }
     });
 
-    // 5. Click the blood drop five times
+    // 4. Click the blood drop five times
     let dropClicks = 0;
     let dropTimer;
     const splatter = document.querySelector(".splatter");
@@ -1975,7 +1960,7 @@
       }
     });
 
-    // 6. Stamp cycles through classifications
+    // 5. Stamp cycles through classifications
     const stamp = document.getElementById("stamp");
     const stampTexts = ["Strictly Confidential", "Redacted", "Classified", "Burn After Reading", "Eyes Only", "Strictly Confidential"];
     let stampPos = 0;
@@ -1994,24 +1979,7 @@
       }
     });
 
-    // 7. Click the countdown three times: time of death
-    let countdownClicks = 0;
-    document.getElementById("countdown").addEventListener("click", () => {
-      countdownClicks += 1;
-      if (countdownClicks === 3) {
-        countdownClicks = 0;
-        document.querySelectorAll("#countdown .countdown-label").forEach((el) => {
-          el.dataset.original = el.dataset.original || el.textContent;
-          el.textContent = "Until Death";
-        });
-        setTimeout(() => {
-          document.querySelectorAll("#countdown .countdown-label").forEach((el) => (el.textContent = el.dataset.original));
-        }, 4000);
-        findEgg("death", "Time of Death", "The coroner has examined the clock. Estimated time of death: 11:45 PM, right after the final waltz.");
-      }
-    });
-
-    // 8. Leave the tab and come back
+    // 6. Leave the tab and come back
     const originalTitle = document.title;
     let wasHidden = false;
     document.addEventListener("visibilitychange", () => {
@@ -2028,7 +1996,7 @@
 
     // Bonus for the source-code sleuths
     console.log(
-      "%cA Killer Fall Ball%c\nSnooping through the source? A true detective.\nTry typing \"waltz\", \"butler\", or \"detective\" on the page.",
+      "%cA Killer Fall Ball%c\nSnooping through the source? A true detective.\nTry typing \"waltz\" or \"butler\" on the page.",
       "font: 32px serif; color: #e3232f;",
       "font: 14px serif; color: #efe6d8;"
     );
