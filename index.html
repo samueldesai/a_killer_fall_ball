@@ -1835,6 +1835,33 @@
     /* ---------- accusation ---------- */
     const accuseRow = document.getElementById("accuseRow");
     const verdict = document.getElementById("verdict");
+    const SOLVED_HTML = `<strong>It was you.</strong>
+        The dance card, the glove, the socks, the fingerprints, the cheese: it all points to you.
+        You're going to absolutely <em>kill it</em> on the dance floor. Report to Roble Gym on
+        Friday, November 6 at 9:00 PM (or 8:00 PM for the waltz lesson) to face the music.`;
+
+    // Reserve room for the longest possible verdict so the box never changes size.
+    function sizeVerdict() {
+      const saved = { html: verdict.innerHTML, solved: verdict.classList.contains("solved") };
+      const messages = [
+        ...suspects.map((s) => ({ text: `You point at ${s.first}, but the case is too thin. You've found ${clues.length - 1} of ${clues.length} clues. Keep investigating.` })),
+        ...suspects.map((s) => ({ text: s.rebuttal + " The evidence points somewhere else entirely..." })),
+        { text: "The case has been reopened. The clues have been returned to the scene." },
+        { text: "Choose a suspect when you're ready. Choose wisely." },
+        { html: SOLVED_HTML, solved: true }
+      ];
+      verdict.style.minHeight = "0";
+      let tallest = 0;
+      messages.forEach((m) => {
+        verdict.classList.toggle("solved", Boolean(m.solved));
+        if (m.html) verdict.innerHTML = m.html;
+        else verdict.textContent = m.text;
+        tallest = Math.max(tallest, verdict.offsetHeight);
+      });
+      verdict.classList.toggle("solved", saved.solved);
+      verdict.innerHTML = saved.html;
+      verdict.style.minHeight = `${tallest}px`;
+    }
 
     suspects.forEach((s) => {
       const btn = document.createElement("button");
@@ -1859,10 +1886,7 @@
     mirrorButton.hidden = true;
     mirrorButton.addEventListener("click", () => {
       verdict.classList.add("solved");
-      verdict.innerHTML = `<strong>It was you.</strong>
-        The dance card, the glove, the socks, the fingerprints, the cheese: it all points to you.
-        You're going to absolutely <em>kill it</em> on the dance floor. Report to Roble Gym on
-        Friday, November 6 at 9:00 PM (or 8:00 PM for the waltz lesson) to face the music.`;
+      verdict.innerHTML = SOLVED_HTML;
     });
     accuseRow.appendChild(mirrorButton);
 
@@ -2010,6 +2034,13 @@
 
     renderEggs();
     renderBoard();
+    sizeVerdict();
+    document.fonts.ready.then(sizeVerdict);
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(sizeVerdict, 150);
+    });
   </script>
 </body>
 </html>
