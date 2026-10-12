@@ -339,6 +339,14 @@
       background: rgba(0, 0, 0, 0.45);
     }
 
+    /* Cinzel has proportional digits; 0 is the widest at 0.653em, so give
+       every digit a slot that wide */
+    .countdown-num .digit {
+      display: inline-block;
+      width: 0.66em;
+      text-align: center;
+    }
+
     .countdown-num {
       display: block;
       font-family: var(--heading);
@@ -1638,7 +1646,9 @@
         s: Math.floor(diff / 1000) % 60
       };
       countdownNums.forEach((el) => {
-        el.textContent = String(parts[el.dataset.unit]).padStart(2, "0");
+        // each digit gets its own fixed-width slot so the boxes never resize
+        const digits = String(parts[el.dataset.unit]).padStart(2, "0");
+        el.innerHTML = [...digits].map((d) => `<span class="digit">${d}</span>`).join("");
       });
       if (now >= eventEnd) {
         countdownCaption.textContent = "The case is closed. Thank you for dancing with us.";
