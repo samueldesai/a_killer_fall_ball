@@ -2021,8 +2021,9 @@
         const end = edge + 40 + Math.random() * H * 0.5;
         const bead = w * (0.55 + Math.random() * 0.1);
         shapes.push(`<path d="M${x - w / 2 - 6} ${edge - 10} Q${x - w / 2} ${edge + 20} ${x - w / 2} ${edge + 40} L${x - w / 2 + 1} ${end} L${x + w / 2 - 1} ${end} L${x + w / 2} ${edge + 40} Q${x + w / 2} ${edge + 20} ${x + w / 2 + 6} ${edge - 10} Z"/>`);
-        shapes.push(`<ellipse cx="${x}" cy="${end}" rx="${bead}" ry="${bead * 1.15}"/>`);
-        shines.push(`<ellipse cx="${x - bead * 0.35}" cy="${end - bead * 0.35}" rx="${bead * 0.22}" ry="${bead * 0.32}"/>`);
+        // oblong bead, hanging slightly below the end of the drip
+        shapes.push(`<ellipse cx="${x}" cy="${end + bead * 0.5}" rx="${bead}" ry="${bead * 1.8}"/>`);
+        shines.push(`<ellipse cx="${x - bead * 0.35}" cy="${end}" rx="${bead * 0.2}" ry="${bead * 0.5}"/>`);
         x += 26 + Math.random() * 70;
       }
       splatter.innerHTML = `
