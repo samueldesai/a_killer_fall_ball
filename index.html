@@ -1107,7 +1107,8 @@
     }
 
     .intro-inner {
-      max-width: 640px;
+      /* wide enough for "Everyone is a suspect." on one line at full size */
+      max-width: 760px;
       text-align: center;
     }
 
@@ -1162,7 +1163,8 @@
     .intro-line.red {
       color: var(--blood-bright);
       font-family: var(--display);
-      font-size: clamp(2.2rem, 7vw, 3.6rem);
+      font-size: clamp(1.6rem, 7vw, 3.6rem);
+      white-space: nowrap;
       letter-spacing: 0.02em;
       margin-top: 18px;
       text-shadow: 0 0 30px rgba(227, 35, 47, 0.5);
@@ -1751,7 +1753,7 @@
         first: "Samuel",
         role: "Co-Chair",
         initial: "S",
-        suspicious: "Was a <em>little</em> too excited about this website.",
+        suspicious: "Was a little <em>too</em> excited about this website.",
         motive: "Failed Richard Powers' class.",
         alibi: "\u201CI was co-chairing all night. Ask Lis.\u201D",
         rebuttal: "Lis confirms Samuel was co-chairing all night, and he was far too busy showing people this website's secrets to commit a crime. Innocent."
