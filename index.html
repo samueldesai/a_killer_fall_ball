@@ -1361,7 +1361,7 @@
         <a href="#case">The Case</a>
         <a href="#chronology">Chronology</a>
         <a href="#suspects">Suspects</a>
-        <a href="#tickets">Tickets</a>
+        <a href="https://fallball26.eventbrite.com/">Tickets</a>
         <a href="#volunteer">Volunteer</a>
         <a class="clue-counter" href="#evidence" title="Clues found">Clues <b id="navCount">0</b>/6</a>
       </div>
@@ -1391,8 +1391,7 @@
       <p class="countdown-caption" id="countdownCaption">until the first dance. Nobody leaves until the case is closed.</p>
 
       <div class="cta-row">
-        <!-- TODO: replace with the Fall Ball ticket link -->
-        <a class="button" href="#tickets">Get Tickets</a>
+        <a class="button" href="https://fallball26.eventbrite.com/">Get Tickets</a>
         <button class="ghost-button" id="musicToggle" type="button">&#9835; Play the Theme</button>
       </div>
 
@@ -1441,8 +1440,7 @@
         </ul>
         <p>The waltz lesson is included with your ticket. Arrive at 8:00 PM to join it.</p>
         <div class="cta-row" style="margin: 24px 0 0;">
-          <!-- TODO: replace with the Fall Ball ticket link -->
-          <a class="button" href="#tickets">Buy Tickets</a>
+          <a class="button" href="https://fallball26.eventbrite.com/">Buy Tickets</a>
         </div>
       </article>
     </section>
@@ -1785,10 +1783,10 @@
         first: "Michael",
         role: "Decor",
         initial: "M",
-        suspicious: "Bought an alarming amount of blood-red fabric. Won't say why.",
-        motive: "Got stepped on during the Cross-Step Waltz Mixer.",
+        suspicious: "Ordered the fake candles in bulk, then quietly returned one. Only one.",
+        motive: "Someone said the decor was “fine.”",
         alibi: "\u201CI was holding Eddy's ladder. The entire time.\u201D",
-        rebuttal: "Michael has receipts for the red fabric. It really was just tablecloths. Innocent."
+        rebuttal: "Michael shows the detectives all the lights hung up nicely in the courtyard. <em>Clearly</em> he was busy. Innocent."
       },
       {
         name: "Milo Grossman",
@@ -1928,7 +1926,7 @@
       const saved = { html: verdictText.innerHTML, solved: verdict.classList.contains("solved") };
       const messages = [
         ...suspects.map((s) => ({ text: `You point at ${s.first}, but the case is too thin. You've found ${clues.length - 1} of ${clues.length} clues. Keep investigating.` })),
-        ...suspects.map((s) => ({ text: s.rebuttal + " The evidence points somewhere else entirely..." })),
+        ...suspects.map((s) => ({ html: s.rebuttal + " The evidence points somewhere else entirely..." })),
         { text: "The case has been reopened. The clues have been returned to the scene." },
         { text: "Choose a suspect when you're ready. Choose wisely." },
         { html: SOLVED_HTML, solved: true }
@@ -1956,7 +1954,7 @@
         if (found.size < clues.length) {
           verdictText.textContent = `You point at ${s.first}, but the case is too thin. You've found ${found.size} of ${clues.length} clues. Keep investigating.`;
         } else {
-          verdictText.textContent = s.rebuttal + " The evidence points somewhere else entirely...";
+          verdictText.innerHTML = s.rebuttal + " The evidence points somewhere else entirely...";
         }
       });
       accuseRow.appendChild(btn);
